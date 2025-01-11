@@ -3,7 +3,7 @@
 #include <string.h>
 #include <locale.h>
 
-
+#include "abp.c"
 /*
 Programa lê um dicionário e imprime pares de palavras
 ali na linha 73 a gente vai adicionar as funções de inserir na árvore
@@ -29,6 +29,9 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
     char *sinonimo;
     char separador[]= {" ,.&*%\?!;/-'@\"$#=><()][}{:\n\t"};
     char separa_dict[] = {" \t\n"};
+
+    pNodoA *arvoreABP;
+    arvoreABP = NULL;
 
 
     if (argc!=4)  //o numero de parametros esperado é 3: nome do programa (argv[0]),
@@ -66,8 +69,6 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
         return 1;
     }
 
-
-
     //percorre todo o dicionario  lendo linha por linha
     while (fgets(linha,1000,dicionario))
     {
@@ -75,17 +76,35 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
         sinonimo = strtok (NULL, separa_dict); // já pega o sinônimo também
         while (palavra != NULL)
         {
-            // Insere(palavra, sinonimo);
-            // Insere(sinonimo, palavra);
-            printf("%s -- %s\n", strlwr(palavra), strlwr(sinonimo)); //strlwr � a fun��o que converte palavras para min�sculo
-            printf("%s -- %s\n", strlwr(sinonimo), strlwr(palavra));
+            arvoreABP = Inserearvore(arvoreABP, palavra, sinonimo);
+            //arvoreABP = Inserearvore(arvoreABP, sinonimo, palavra);
+            //printf("%s -- %s\n", strlwr(palavra), strlwr(sinonimo)); //strlwr � a fun��o que converte palavras para min�sculo
+            // printf("%s -- %s\n", strlwr(sinonimo), strlwr(palavra));
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
         }
     }
 
+    // percorre toda a entrada, lendo linha por linha
+    // traduzindo e escrevendo no arquivo de saída
+    while (fgets(linha,1000,entrada))
+    {
+        palavra = strtok (linha, separador); //considera qquer caractere n�o alfab�tico como separador
+        while (palavra != NULL)
+        {
+            sinonimo = BuscaArvore(arvoreABP, palavra);
+            if(sinonimo == NULL)
+                sinonimo = palavra;
+            fprintf(saida,"%s ", sinonimo); //strlwr � a fun��o que converte palavras para min�sculo
+            palavra = strtok (NULL, separador);
+        }
+    }
 
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
+
+    printf("Comparacoes ABP: %d\n", comp);
+    printf("Numero de nodos ABP: %d\n", Nodos(arvoreABP));
+    printf("Altura ABP: %d\n", Altura(arvoreABP));
 
     fclose (entrada); //fecha os arquivos
     fclose (saida);
