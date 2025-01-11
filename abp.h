@@ -1,15 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 typedef struct TNodoA{
-   int info;
+   char palavra[50];
+   char sinonimo[50];
+
    struct TNodoA *esq;
    struct TNodoA *dir;
 } pNodoA;
 
 
-pNodoA* Inserearvore(pNodoA *a, int ch);
+pNodoA* Inserearvore(pNodoA *a, char *palavra, char *sinonimo);
+char* BuscaArvore(pNodoA *a, char *palavra);
 void PreFixado(pNodoA *a);
 void imprimeArvore(pNodoA *a);
 void imprimeABP(pNodoA *a, int altura);

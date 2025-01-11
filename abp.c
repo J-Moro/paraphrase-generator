@@ -1,26 +1,39 @@
 #include "abp.h"
 
-pNodoA* Inserearvore(pNodoA *a, int ch)
+pNodoA* Inserearvore(pNodoA *a, char *palavra, char *sinonimo)
 {
     if (a == NULL)
     {
         a = (pNodoA*) malloc(sizeof(pNodoA));
-        a->info = ch;
+        strcpy(a->palavra, palavra);
+        strcpy(a->sinonimo, sinonimo);
         a->esq = NULL;
         a->dir = NULL;
     }
-    else if (ch < a->info)
-        a->esq = Inserearvore(a->esq,ch);
+    else if (strcmp(palavra, a->palavra) < 0)
+        a->esq = Inserearvore(a->esq, palavra, sinonimo);
     else
-        a->dir = Inserearvore(a->dir,ch);
+        a->dir = Inserearvore(a->dir, palavra, sinonimo);
     return a;
+}
+
+char* BuscaArvore(pNodoA *a, char *palavra)
+{
+    if (a == NULL)
+        return NULL;
+    else if (strcmp(palavra, a->palavra) == 0)
+        return a->sinonimo;
+    else if (strcmp(palavra, a->palavra) < 0)
+        return BuscaArvore(a->esq, palavra);
+    else
+        return BuscaArvore(a->dir, palavra);
 }
 
 void PreFixado(pNodoA *a)
 {
-    if (a!= NULL)
+    if (a != NULL)
     {
-        printf("%d\n",a->info);
+        printf("%s\n", a->palavra);
         PreFixado(a->esq);
         PreFixado(a->dir);
     }
@@ -33,29 +46,27 @@ void imprimeArvore(pNodoA *a)
 
 void imprimeABP(pNodoA *a, int altura)
 {
-
-    if (a!= NULL)
+    if (a != NULL)
     {
-
         for (int i = 0; i < altura; i++)
             printf("=");
 
-        printf("%d\n",a->info);
+        printf("%s\n", a->palavra);
         imprimeABP(a->esq, altura + 1);
         imprimeABP(a->dir, altura + 1);
     }
     else return;
 }
 
-int Altura (pNodoA *a)
+int Altura(pNodoA *a)
 {
     int Alt_Esq, Alt_Dir;
     if (a == NULL)
         return 0;
     else
     {
-        Alt_Esq = Altura (a->esq);
-        Alt_Dir = Altura (a->dir);
+        Alt_Esq = Altura(a->esq);
+        Alt_Dir = Altura(a->dir);
         if (Alt_Esq > Alt_Dir)
             return (1 + Alt_Esq);
         else
@@ -63,12 +74,12 @@ int Altura (pNodoA *a)
     }
 }
 
-int fatorDeBalanceamento (pNodoA *a)
+int fatorDeBalanceamento(pNodoA *a)
 {
-    return fatorDeBalanceamentoArvore (a, 0);
+    return fatorDeBalanceamentoArvore(a, 0);
 }
 
-int fatorDeBalanceamentoArvore (pNodoA *a, int maiorFator)
+int fatorDeBalanceamentoArvore(pNodoA *a, int maiorFator)
 {
     int fatorA, fatorEsq, fatorDir;
 
@@ -84,8 +95,9 @@ int fatorDeBalanceamentoArvore (pNodoA *a, int maiorFator)
         maiorFator = fatorEsq;
     else maiorFator = fatorDir;
 
-    if (fatorA >maiorFator)
+    if (fatorA > maiorFator)
         maiorFator = fatorA;
 
     return maiorFator;
 }
+
