@@ -13,8 +13,8 @@ por enquanto entrada não faz nada e saída escreve um arquivo vazio
 dict_1K.txt é o nome do dicionário (no moodle tem outros tamanhos)
 */
 
-
-
+// ignora minha função no arquivo main, já já eu coloco em outro :)
+char* my_strtok(char* str, char* separa, char* out_separa, char** resto);
 
 int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv armazena as strings correspondentes aos par�mentros digitados
 {
@@ -27,8 +27,10 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
 
     char *palavra, linha[1000]; // buffer de linha de 999 bytes
     char *sinonimo;
-    char separador[]= {" ,.&*%\?!;/-'@\"$#=><()][}{:\n\t"};
+    char separador[]= {" ,.&*%\?!;/'@\"$#=><()][}{:\n\t"};
     char separa_dict[] = {" \t\n"};
+    char separa_achado[20];
+    char *resto_linha;
 
     pNodoA *arvoreABP;
     arvoreABP = NULL;
@@ -89,15 +91,17 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
     // traduzindo e escrevendo no arquivo de saída
     while (fgets(linha,1000,entrada))
     {
-        palavra = strtok (linha, separador); //considera qquer caractere n�o alfab�tico como separador
+        //palavra = strtok (linha, separador); //considera qquer caractere n�o alfab�tico como separador
+        palavra = my_strtok(linha, separador, separa_achado, &resto_linha);
         while (palavra != NULL)
         {
             palavra = strlwr(palavra);
             sinonimo = BuscaArvore(arvoreABP, palavra); // procura a palavra (minúcula)
             if(sinonimo == NULL)
                 sinonimo = palavra;
-            fprintf(saida,"%s ", sinonimo); //strlwr � a fun��o que converte palavras para min�sculo
-            palavra = strtok (NULL, separador);
+            fprintf(saida,"%s%s", sinonimo, separa_achado); //strlwr � a fun��o que converte palavras para min�sculo
+            //palavra = strtok (NULL, separador);
+            palavra = my_strtok(NULL, separador, separa_achado, &resto_linha);
         }
     }
 
@@ -107,8 +111,49 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
     printf("Numero de nodos ABP: %d\n", Nodos(arvoreABP));
     printf("Altura ABP: %d\n", Altura(arvoreABP));
 
+    fclose (dicionario);
     fclose (entrada); //fecha os arquivos
     fclose (saida);
     return 0;
 
+}
+
+
+char* my_strtok(char* str, char* separa, char* out_separa, char** resto)
+{   // retorna token de str, separada por caracteres de separa
+    // guarda separadores entre palavras em out_separa
+    // utiliza resto para avançar pela string
+    // baseado em strtok_r()
+    char *end, *start;
+    int tam_separador;
+    int i;
+
+    if (str == NULL & *resto == NULL) // erro: string inválida
+        return NULL;
+
+    if (str != NULL)
+        start = str;
+
+    if(str == NULL && *resto != NULL)
+        start = *resto;
+
+    start += strspn(start, separa); // pula separadores iniciais
+
+    end = start + strcspn(start, separa);   // endereço de fim da token
+    // é onde vai estar o \0
+    tam_separador = strspn(end, separa); // tamanho do separador depois da token
+
+    for (i = 0; i < tam_separador; i++)
+        out_separa[i] = end[i];
+    out_separa[tam_separador] = '\0';
+    // guarda o separador
+
+    if(end == start) // não tem mais tokens, só possíveis separadores
+        return NULL;
+
+    end[0] = '\0';    // fim da token
+
+    *resto = end + tam_separador;   // começo da próxima token
+
+    return start;   // começo dessa token
 }
