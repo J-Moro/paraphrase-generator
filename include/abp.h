@@ -4,19 +4,19 @@
 #include <string.h>
 
 typedef struct TNodoA{
-   char palavra[50];
+   char info[50];
    char sinonimo[50];
 
    struct TNodoA *esq;
    struct TNodoA *dir;
+
+   int altura;
+   int nodos;
 } pNodoA;
 
+int comp = 0;
 
 pNodoA* Inserearvore(pNodoA *a, char *palavra, char *sinonimo);
+pNodoA *consulta(pNodoA *a, char *chave);
 char* BuscaArvore(pNodoA *a, char *palavra);
-void PreFixado(pNodoA *a);
-void imprimeArvore(pNodoA *a);
-void imprimeABP(pNodoA *a, int altura);
-int Altura (pNodoA *a);
-int fatorDeBalanceamento (pNodoA *a);
-int fatorDeBalanceamentoArvore (pNodoA *a, int maiorFator);
+int Altura(pNodoA *a);
