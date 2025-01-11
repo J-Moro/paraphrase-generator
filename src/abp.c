@@ -9,8 +9,6 @@ pNodoA *Inserearvore(pNodoA *a, char *palavra, char *sinonimo)
         strcpy(a->sinonimo, sinonimo);
         a->esq = NULL;
         a->dir = NULL;
-        a->nodos++;
-
     }
     else if (strcmp(palavra, a->info) < 0)
         a->esq = Inserearvore(a->esq, palavra, sinonimo);
@@ -47,6 +45,14 @@ char *BuscaArvore(pNodoA *a, char *palavra)
         return consulta(a, palavra)->sinonimo;
     else
         return NULL;
+}
+
+int Nodos(pNodoA *a)
+{
+    if (a == NULL)
+        return 0;
+    else
+        return (1 + Nodos(a->esq) + Nodos(a->dir));
 }
 
 int Altura(pNodoA *a)

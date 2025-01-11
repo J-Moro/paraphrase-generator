@@ -10,8 +10,6 @@ typedef struct TNodoA{
    struct TNodoA *esq;
    struct TNodoA *dir;
 
-   int altura;
-   int nodos;
 } pNodoA;
 
 int comp = 0;
@@ -19,4 +17,5 @@ int comp = 0;
 pNodoA* Inserearvore(pNodoA *a, char *palavra, char *sinonimo);
 pNodoA *consulta(pNodoA *a, char *chave);
 char* BuscaArvore(pNodoA *a, char *palavra);
+int Nodos(pNodoA *a);
 int Altura(pNodoA *a);
