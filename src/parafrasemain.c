@@ -92,7 +92,8 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
         palavra = strtok (linha, separador); //considera qquer caractere n�o alfab�tico como separador
         while (palavra != NULL)
         {
-            sinonimo = BuscaArvore(arvoreABP, palavra);
+            palavra = strlwr(palavra);
+            sinonimo = BuscaArvore(arvoreABP, palavra); // procura a palavra (minúcula)
             if(sinonimo == NULL)
                 sinonimo = palavra;
             fprintf(saida,"%s ", sinonimo); //strlwr � a fun��o que converte palavras para min�sculo
