@@ -1,3 +1,6 @@
+#ifndef ABP_H
+#define ABP_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -20,3 +23,5 @@ pNodoA *consulta(pNodoA *a, char *chave);
 char* BuscaArvore(pNodoA *a, char *palavra);
 int Nodos(pNodoA *a);
 int Altura(pNodoA *a);
+
+#endif  // ABP_H

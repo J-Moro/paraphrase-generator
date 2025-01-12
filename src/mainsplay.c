@@ -3,6 +3,7 @@
 #include <string.h>
 #include <locale.h>
 #include "splay.c"
+#include "abp.c"
 #include "my_strtok.c"
 
 /*
@@ -118,8 +119,8 @@ int main(int argc, char *argv[])
     // Impressão das estatísticas
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
     printf("Comparações Splay: %d\n", comp);
-    //printf("Número de nodos Splay: %d\n", Nodos(arvoreSplay));
-    //printf("Altura Splay: %d\n", Altura(arvoreSplay));
+    printf("Número de nodos Splay: %d\n", Nodos(arvoreSplay));
+    printf("Altura Splay: %d\n", Altura(arvoreSplay));
     printf("Número de linhas: %d\n", n_linhas);
     printf("Numero de palavras: %d\n", n_palavras);
 

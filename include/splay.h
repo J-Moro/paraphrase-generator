@@ -1,3 +1,6 @@
+#ifndef SPLAY_H
+#define SPLAY_H
+
 #include "abp.h"
 
 int rotacoes = 0;
@@ -16,3 +19,5 @@ pNodoA* join(pNodoA* raiz1, pNodoA* raiz2);
 void split(pNodoA* root, char* chave, pNodoA** root1, pNodoA** root2);
 pNodoA* insereSplay(pNodoA* a, char* palavra, char* sinonimo);
 pNodoA* deleteSplay(pNodoA* raiz, char* chave);
+
+#endif // SPLAY_H
