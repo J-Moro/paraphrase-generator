@@ -21,7 +21,7 @@ pNodoA *Inserearvore(pNodoA *a, char *palavra, char *sinonimo)
         a->dir = Inserearvore(a->dir, palavra, sinonimo);
         a->dir->pai = a;
     }
-        
+
     return a;
 }
 
@@ -49,8 +49,9 @@ pNodoA *consulta(pNodoA *a, char *chave)
 
 char *BuscaArvore(pNodoA *a, char *palavra)
 {
-    if (consulta(a, palavra) != NULL)
-        return consulta(a, palavra)->sinonimo;
+    pNodoA *palavraAchada = consulta(a, palavra);
+    if (palavraAchada != NULL)
+        return palavraAchada->sinonimo;
     else
         return NULL;
 }

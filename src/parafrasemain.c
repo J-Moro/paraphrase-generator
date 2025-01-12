@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
     char *resto_linha;
     int tam_separador;
     int n_linhas, n_palavras;
-
+    int comp_anterior;
     pNodoA *arvoreABP;
     arvoreABP = NULL;
 
@@ -91,6 +91,7 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
 
     n_linhas = 0;
     n_palavras = 0;
+    comp_anterior = 0;
     // percorre toda a entrada, lendo linha por linha
     // traduzindo e escrevendo no arquivo de saída
     while (fgets(linha,1000,entrada))
@@ -119,8 +120,8 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
             if(sinonimo == NULL)
                 sinonimo = palavra;
             fprintf(saida,"%s%s", sinonimo, separa_achado); //strlwr � a fun��o que converte palavras para min�sculo
-            //printf("%d, %d, %d, %d:%s:%s:\n", l, p, comp - comp_ant, comp, palavra, sinonimo);
-            //comp_ant = comp;
+            //printf("%d, %d, %d:%s:%s:\n", n_linhas, comp - comp_anterior, comp, palavra, sinonimo);
+            comp_anterior = comp;
             //palavra = strtok (NULL, separador);
             palavra = my_strtok(NULL, separador, separa_achado, &resto_linha);
         }
