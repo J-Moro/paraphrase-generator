@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
-#include "splay.c"
+#include "abp.c"
 #include "my_strtok.c"
 
 /*
-Programa gerador de paráfrases por árvore Splay.
+Programa gerador de paráfrases por árvore ABP.
 Deve ser chamado na linha de comando como:
-mainsplay --dict --text --output
+mainABP --dict --text --output
 onde:
 --dict é o nome do arquivo contendo pares de sinônimos
 --text é o nome do arquivo de entrada, a ser parafraseado
@@ -32,14 +32,14 @@ int main(int argc, char *argv[])
     int tam_separador;
     int n_linhas, n_palavras;
     int comp_anterior;
-    pNodoA *arvoreSplay;
-    arvoreSplay = NULL;
+    pNodoA *arvoreABP;
+    arvoreABP = NULL;
 
 
     if (argc!=4)  // programa espera 4 parâmetros
     {
         printf ("Número incorreto de parâmetros.\n"
-                "Para chamar o programa digite: mainsplay <arq_dicionario> <arq_entrada> <arq_saida>\n");
+                "Para chamar o programa digite: mainABP <arq_dicionario> <arq_entrada> <arq_saida>\n");
         return 1;
     }
     // else, chamada do programa ok
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         sinonimo = strtok (NULL, separa_dict);
         while (palavra != NULL)
         {   // insere palavra e sinônimo na árvore e procura próximos pares
-            arvoreSplay = insereSplay(arvoreSplay, palavra, sinonimo);
+            arvoreABP = Inserearvore(arvoreABP, palavra, sinonimo);
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
         }
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
         {
             n_palavras++;
             palavra = strlwr(palavra);
-            sinonimo = buscaSinonimo(arvoreSplay, palavra); // procura a palavra (minúcula)
+            sinonimo = BuscaArvore(arvoreABP, palavra); // procura a palavra (minúcula)
             if(sinonimo == NULL)
                 sinonimo = palavra;
             // escreve no arquivo o sinônimo, seguido pelo separador
@@ -117,9 +117,9 @@ int main(int argc, char *argv[])
 
     // Impressão das estatísticas
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
-    printf("Comparações Splay: %d\n", comp);
-    //printf("Número de nodos Splay: %d\n", Nodos(arvoreSplay));
-    //printf("Altura Splay: %d\n", Altura(arvoreSplay));
+    printf("Comparações ABP: %d\n", comp);
+    printf("Número de nodos ABP: %d\n", Nodos(arvoreABP));
+    printf("Altura ABP: %d\n", Altura(arvoreABP));
     printf("Número de linhas: %d\n", n_linhas);
     printf("Numero de palavras: %d\n", n_palavras);
 

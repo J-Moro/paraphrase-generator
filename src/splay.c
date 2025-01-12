@@ -201,19 +201,22 @@ void split(pNodoA* root, char* chave, pNodoA** root1, pNodoA** root2) {
 
 pNodoA *insereSplay(pNodoA *a, char *palavra, char *sinonimo)
 {
-    pNodoA** subArvoreEsq;
-    pNodoA** subArvoreDir;
+    pNodoA *subArvoreEsq = NULL;
+    pNodoA *subArvoreDir = NULL;
 
-    split(a, palavra, subArvoreEsq, subArvoreDir);
+    split(a, palavra, &subArvoreEsq, &subArvoreDir);
 
+    pNodoA *novoNodo = (pNodoA *)malloc(sizeof(pNodoA));
+    strcpy(novoNodo->info, palavra);
+    strcpy(novoNodo->sinonimo, sinonimo);
+    novoNodo->pai = NULL;
+    novoNodo->esq = subArvoreEsq;
+    novoNodo->dir = subArvoreDir;
 
-    a = (pNodoA *)malloc(sizeof(pNodoA));
-    strcpy(a->info, palavra);
-    strcpy(a->sinonimo, sinonimo);
-    a->pai = NULL;
-    a->esq = subArvoreEsq;
-    a->dir = subArvoreDir;
+    if (subArvoreEsq != NULL) subArvoreEsq->pai = novoNodo;
+    if (subArvoreDir != NULL) subArvoreDir->pai = novoNodo;
 
+    return novoNodo;
 }
 
 pNodoA* deleteSplay(pNodoA* raiz, char* chave)
