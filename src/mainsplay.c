@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
-#include "abp.c"
+#include "splay.c"
 #include "my_strtok.c"
 /*
 Programa lê um dicionário e imprime pares de palavras
@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
     int tam_separador;
     int n_linhas, n_palavras;
     int comp_anterior;
-    pNodoA *arvoreABP;
-    arvoreABP = NULL;
+    pNodoA *arvoreSplay;
+    arvoreSplay = NULL;
 
 
     if (argc!=4)  //o numero de parametros esperado é 3: nome do programa (argv[0]),
@@ -78,10 +78,7 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
         sinonimo = strtok (NULL, separa_dict); // já pega o sinônimo também
         while (palavra != NULL)
         {
-            arvoreABP = Inserearvore(arvoreABP, palavra, sinonimo);
-            //arvoreABP = Inserearvore(arvoreABP, sinonimo, palavra);
-            //printf("%s -- %s\n", strlwr(palavra), strlwr(sinonimo)); //strlwr � a fun��o que converte palavras para min�sculo
-            // printf("%s -- %s\n", strlwr(sinonimo), strlwr(palavra));
+            arvoreSplay = insereSplay(arvoreSplay, palavra, sinonimo);
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
         }
@@ -114,7 +111,7 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
         {
             n_palavras++;
             palavra = strlwr(palavra);
-            sinonimo = BuscaArvore(arvoreABP, palavra); // procura a palavra (minúcula)
+            sinonimo = buscaSinonimo(arvoreSplay, palavra); // procura a palavra (minúcula)
             if(sinonimo == NULL)
                 sinonimo = palavra;
             fprintf(saida,"%s%s", sinonimo, separa_achado); //strlwr � a fun��o que converte palavras para min�sculo
@@ -127,9 +124,9 @@ int main(int argc, char *argv[]) //argc conta o n�mero de par�metros e argv 
 
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
 
-    printf("Comparacoes ABP: %d\n", comp);
-    printf("Numero de nodos ABP: %d\n", Nodos(arvoreABP));
-    printf("Altura ABP: %d\n", Altura(arvoreABP));
+    printf("Comparacoes Splay: %d\n", comp);
+    //printf("Numero de nodos Splay: %d\n", Nodos(arvoreSplay));
+    //printf("Altura Splay: %d\n", Altura(arvoreSplay));
     printf("Numero de linhas: %d\n", n_linhas);
     printf("Numero de palavras: %d\n", n_palavras);
 

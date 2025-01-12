@@ -31,13 +31,13 @@ pNodoA* rotacaoZigZag(pNodoA* raiz)
 pNodoA* rotacaoZigZig(pNodoA* raiz)
 {
     raiz = rotacaoZig(raiz);    // rotaciona a raiz para a direita duas vezes
-    return rotacaoZig(raiz);    
+    return rotacaoZig(raiz);
 }
 
 pNodoA* rotacaoZagZag(pNodoA* raiz)
 {
     raiz = rotacaoZag(raiz);    // rotaciona a raiz para a direita duas vezes
-    return rotacaoZag(raiz);    
+    return rotacaoZag(raiz);
 }
 
 pNodoA* splay(pNodoA* nodo, char* chave)    //funcao temporariamente vazia
@@ -47,7 +47,7 @@ pNodoA* splay(pNodoA* nodo, char* chave)    //funcao temporariamente vazia
 
     else if(nodo->pai != NULL)      //se o nodo tiver pai
     {
-        if(nodo->pai->pai =! NULL)  //se o nodo tiver avô
+        if(nodo->pai->pai != NULL)  //se o nodo tiver avô
         {
             if(nodo->pai->pai->esq == nodo->pai) //se o pai for o filho esquerdo do avô
             {
@@ -91,7 +91,7 @@ pNodoA* splay(pNodoA* nodo, char* chave)    //funcao temporariamente vazia
         }
 
     }
-    
+
     if(nodo->pai != NULL)   //se o nodo tiver pai (nao for a raiz)
     {
         return splay(nodo, chave);  //chama a funcao splay recursivamente
@@ -122,7 +122,7 @@ pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
 }
 
 char* buscaSinonimo(pNodoA* raiz, char* chave) {
-    
+
     pNodoA *palavraAchada = access(raiz, chave);
     if (palavraAchada->info == chave)
         return palavraAchada->sinonimo;
@@ -147,7 +147,7 @@ pNodoA* access(pNodoA* raiz, char* chave) {
 }
 
 pNodoA* join(pNodoA* raiz1, pNodoA* raiz2) {
-    
+
     if(raiz1 == NULL) return raiz2;  // If the first tree is empty, return the second tree
     if(raiz2 == NULL) return raiz1;  // If the second tree is empty, return the first tree
 
@@ -216,7 +216,7 @@ pNodoA *insereSplay(pNodoA *a, char *palavra, char *sinonimo)
 
 }
 
-pNodoA* deleteSplay(pNodoA* raiz, char* chave) 
+pNodoA* deleteSplay(pNodoA* raiz, char* chave)
 {
     raiz = access(raiz, chave);  // Splay the node to be deleted
 
