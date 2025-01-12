@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <math.h>
 #include "abp.c"
 #include "my_strtok.c"
 
@@ -30,8 +31,11 @@ int main(int argc, char *argv[])
     char separa_achado[20];
     char *resto_linha;
     int tam_separador;
-    int n_linhas, n_palavras;
-    int comp_anterior;
+    int n_linhas, n_palavras, n_traduzidas, n_n_trad;
+    int comp_anterior, comp_traduzidas, comp_n_trad;
+    double media_comp, desvio_comp, var_comp;
+    double media_traduzidas, desvio_traduzidas, var_traduzidas;
+    double media_n_trad, desvio_n_trad, var_n_trad;
     pNodoA *arvoreABP;
     arvoreABP = NULL;
 
@@ -83,14 +87,23 @@ int main(int argc, char *argv[])
         }
     }
 
+
     // Parafraseamento do texto
     n_linhas = 0;
     n_palavras = 0;
     comp_anterior = 0;
+    n_traduzidas = 0;
+    var_comp = 0;
+    comp_traduzidas = 0;
+    var_traduzidas = 0;
+    n_n_trad = 0;
+    comp_n_trad = 0;
+    var_n_trad = 0;
     // percorre toda a entrada, lendo linha por linha
     // parafraseando e escrevendo no arquivo de saída
     while (fgets(linha,1000,entrada))
     {
+
         n_linhas++;
         // imprime possível separador antes da primeira palavra
         tam_separador = strspn(linha, separador);
@@ -106,14 +119,38 @@ int main(int argc, char *argv[])
             n_palavras++;
             palavra = strlwr(palavra);
             sinonimo = BuscaArvore(arvoreABP, palavra); // procura a palavra (minúcula)
-            if(sinonimo == NULL)
+            if(sinonimo == NULL){
                 sinonimo = palavra;
+                comp_n_trad += comp - comp_anterior;
+                var_n_trad += pow(comp - comp_anterior, 2);
+            }
+            else{
+                comp_traduzidas += comp - comp_anterior;
+                n_traduzidas++;
+                var_traduzidas += pow(comp - comp_anterior, 2);
+            }
             // escreve no arquivo o sinônimo, seguido pelo separador
             fprintf(saida,"%s%s", sinonimo, separa_achado);
+
+            var_comp += pow(comp - comp_anterior, 2);
             comp_anterior = comp;
             palavra = my_strtok(NULL, separador, separa_achado, &resto_linha);
         }
     }
+
+
+    media_comp = (double)comp / n_palavras;
+    var_comp = (double) var_comp / n_palavras - pow(media_comp, 2);
+    desvio_comp = sqrt(var_comp);
+
+    media_traduzidas = (double) comp_traduzidas / n_traduzidas;
+    var_traduzidas = (double) var_traduzidas / n_traduzidas - pow(media_traduzidas, 2);
+    desvio_traduzidas = sqrt(var_traduzidas);
+
+    n_n_trad = n_palavras - n_traduzidas;
+    media_n_trad = (double) comp_n_trad / n_n_trad;
+    var_n_trad = (double) var_n_trad / n_n_trad - pow(media_n_trad, 2);
+    desvio_n_trad = sqrt(var_n_trad);
 
     // Impressão das estatísticas
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
@@ -122,6 +159,20 @@ int main(int argc, char *argv[])
     printf("Altura ABP: %d\n", Altura(arvoreABP));
     printf("Número de linhas: %d\n", n_linhas);
     printf("Numero de palavras: %d\n", n_palavras);
+    printf("Média de comparações por palavra: %.4f\n", media_comp);
+    printf("Variância de comparações por palavra: %.4f\n", var_comp);
+    printf("Desvio padrão de comparações por palavra: %.4f\n", desvio_comp);
+    printf("Numero de palavras traduzidas: %d\n", n_traduzidas);
+    printf("Comparações das palavras traduzidas: %d\n", comp_traduzidas);
+    printf("Média das palavras traduzidas: %f\n", media_traduzidas);
+    printf("Variância das palavras traduzidas: %f\n", var_traduzidas);
+    printf("Desvio padrão das palavras traduzidas: %f\n", desvio_traduzidas);
+    printf("Numero de palavras não traduzidas: %d\n", n_n_trad);
+    printf("Comparações das palavras não traduzidas: %d\n", comp_n_trad);
+    printf("Média das palavras não traduzidas: %f\n", media_n_trad);
+    printf("Variância das palavras não traduzidas: %f\n", var_n_trad);
+    printf("Desvio padrão das palavras não traduzidas: %f\n", desvio_n_trad);
+
 
     // Fechamento dos arquivos
     fclose (dicionario);

@@ -1,4 +1,6 @@
 /.vscode
 *.exe
 *.o
-*.txt
+src/saida.txt
+src/saida2.txt
+src/saida.txt
