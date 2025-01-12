@@ -8,16 +8,32 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Construct the command to call parafrasemain.c
-    char command[1024] = "gcc parafrasemain.c -o parafrasemain && ./parafrasemain";
+
+
+    // Construct the command to call mainABP.c
+    char commandABP[1024] = "gcc -o mainABP mainABP.c && C:\\Users\\moron\\OneDrive\\Documentos\\EstDados\\src\\mainABP.exe";
     for (int i = 1; i < argc; i++) {
-        strcat(command, " ");
-        strcat(command, argv[i]);
+        strcat(commandABP, " ");
+        strcat(commandABP, argv[i]);
     }
 
-    // Execute the command
-    int result = system(command);
-    if (result == -1) {
+    // Execute the command for mainABP.c
+    int resultABP = system(commandABP);
+    if (resultABP == -1) {
+        perror("system");
+        return 1;
+    }
+
+    // Construct the command to call mainsplay.c
+    char commandSplay[1024] = "gcc -o mainsplay mainsplay.c && C:\\Users\\moron\\OneDrive\\Documentos\\EstDados\\src\\mainsplay.exe";
+    for (int i = 1; i < argc; i++) {
+        strcat(commandSplay, " ");
+        strcat(commandSplay, argv[i]);
+    }
+
+    // Execute the command for mainsplay.c
+    int resultSplay = system(commandSplay);
+    if (resultSplay == -1) {
         perror("system");
         return 1;
     }
