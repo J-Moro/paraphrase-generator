@@ -10,6 +10,7 @@ pNodoA* rotacaoZigZig(pNodoA* raiz);
 pNodoA* rotacaoZagZag(pNodoA* raiz);
 pNodoA* splay(pNodoA* nodo, char* chave);
 pNodoA* consultaSplay(pNodoA* a, char* chave, pNodoA** lastVisited);
+char* buscaSinonimo(pNodoA* raiz, char* chave);
 pNodoA* access(pNodoA* raiz, char* chave);
 pNodoA* join(pNodoA* raiz1, pNodoA* raiz2);
 void split(pNodoA* root, char* chave, pNodoA** root1, pNodoA** root2);

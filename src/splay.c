@@ -121,6 +121,16 @@ pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
     return NULL;  // Key not found
 }
 
+char* buscaSinonimo(pNodoA* raiz, char* chave) {
+    
+    pNodoA *palavraAchada = access(raiz, chave);
+    if (palavraAchada->info == chave)
+        return palavraAchada->sinonimo;
+    else
+        return NULL;
+
+}
+
 pNodoA* access(pNodoA* raiz, char* chave) {
     pNodoA* lastVisited = NULL;
     pNodoA* found = consultaSplay(raiz, chave, &lastVisited);  // Search the tree
