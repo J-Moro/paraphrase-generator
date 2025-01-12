@@ -124,7 +124,7 @@ pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
 char* buscaSinonimo(pNodoA* raiz, char* chave) {
 
     pNodoA *palavraAchada = access(raiz, chave);
-    if (palavraAchada->info == chave)
+    if (strcmp(palavraAchada->info, chave) == 0)
         return palavraAchada->sinonimo;
     else
         return NULL;
