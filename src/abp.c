@@ -7,13 +7,21 @@ pNodoA *Inserearvore(pNodoA *a, char *palavra, char *sinonimo)
         a = (pNodoA *)malloc(sizeof(pNodoA));
         strcpy(a->info, palavra);
         strcpy(a->sinonimo, sinonimo);
+        a->pai = NULL;
         a->esq = NULL;
         a->dir = NULL;
     }
     else if (strcmp(palavra, a->info) < 0)
+    {
         a->esq = Inserearvore(a->esq, palavra, sinonimo);
+        a->esq->pai = a;
+    }
     else
+    {
         a->dir = Inserearvore(a->dir, palavra, sinonimo);
+        a->dir->pai = a;
+    }
+        
     return a;
 }
 

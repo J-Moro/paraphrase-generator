@@ -39,3 +39,8 @@ pNodoA* rotacaoZagZag(pNodoA* raiz)
     raiz = rotacaoZag(raiz);    // rotaciona a raiz para a direita duas vezes
     return rotacaoZag(raiz);    
 }
+
+pNodoA* splay(pNodoA* raiz, char* chave)    //funcao temporariamente vazia
+{
+    return raiz;
+}

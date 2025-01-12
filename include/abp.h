@@ -7,6 +7,7 @@ typedef struct TNodoA{
    char info[50];
    char sinonimo[50];
 
+   struct TNodoA *pai;
    struct TNodoA *esq;
    struct TNodoA *dir;
 
