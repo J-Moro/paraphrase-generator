@@ -81,6 +81,8 @@ int main(int argc, char *argv[])
         sinonimo = strtok (NULL, separa_dict);
         while (palavra != NULL)
         {   // insere palavra e sinônimo na árvore e procura próximos pares
+            palavra = strlwr(palavra);
+            sinonimo = strlwr(sinonimo);
             arvoreABP = Inserearvore(arvoreABP, palavra, sinonimo);
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
