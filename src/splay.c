@@ -40,7 +40,65 @@ pNodoA* rotacaoZagZag(pNodoA* raiz)
     return rotacaoZag(raiz);    
 }
 
-pNodoA* splay(pNodoA* raiz, char* chave)    //funcao temporariamente vazia
+pNodoA* splay(pNodoA* nodo, char* chave)    //funcao temporariamente vazia
 {
+    if(nodo == NULL)    // se a arvore estiver vazia
+        return nodo;    // retorna a arvore vazia
+
+    else if(nodo->pai != NULL)      //se o nodo tiver pai
+    {
+        if(nodo->pai->pai =! NULL)  //se o nodo tiver avô
+        {
+            if(nodo->pai->pai->esq == nodo->pai) //se o pai for o filho esquerdo do avô
+            {
+                if(nodo->pai->esq == nodo) //se o nodo for o filho esquerdo
+                {
+                    rotacaoZigZig(nodo->pai->pai);  //rotaciona para a direita
+                }
+                else
+                {
+                    rotacaoZagZig(nodo->pai->pai);  //rotaciona para a esquerda
+                }
+            }
+            else
+            {
+                if(nodo->pai->dir == nodo) //se o nodo for o filho direito
+                {
+                    rotacaoZagZag(nodo->pai->pai);  //rotaciona para a esquerda
+                }
+                else
+                {
+                    rotacaoZigZag(nodo->pai->pai);  //rotaciona para a direita
+                }
+            }
+        }
+        else
+        {
+            if(nodo->pai->esq == nodo) //se o nodo for o filho esquerdo
+            {
+                rotacaoZig(nodo->pai);  //rotaciona o pai para a direita
+            }
+            else
+            {
+                rotacaoZag(nodo->pai);  //rotaciona o pai para a esquerda
+            }
+        }
+
+    }
+    
+    if(nodo->pai != NULL)   //se o nodo tiver pai (nao for a raiz)
+    {
+        return splay(nodo, chave);  //chama a funcao splay recursivamente
+    }
+    else
+    {
+        return nodo;    //retorna o nodo
+    }
+}
+
+pNodoA* access(pNodoA* raiz, char* chave)    
+{
+    raiz = consulta(raiz, chave);   // busca a chave na arvore
+        
     return raiz;
 }
