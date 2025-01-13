@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     char separa_achado[20];
     char *resto_linha;
     int tam_separador;
-    int n_linhas, n_palavras, n_traduzidas, n_n_trad;
+    int n_linhas, n_palavras, n_traduzidas, n_n_trad, n_dicionario;
     int comp_anterior, comp_traduzidas, comp_n_trad;
     double media_comp, desvio_comp, var_comp;
     double media_traduzidas, desvio_traduzidas, var_traduzidas;
@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     // else, arquivo de saída OK
+    n_dicionario = 0;
     // Criação da árvore
     while (fgets(linha,1000,dicionario))
     {   //percorre todo o dicionario, lendo linha por linha
@@ -83,6 +84,7 @@ int main(int argc, char *argv[])
             palavra = strlwr(palavra);
             sinonimo = strlwr(sinonimo);
             arvoreABP = InsereIterativo(arvoreABP, palavra, sinonimo);
+            n_dicionario++;
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
         }
@@ -155,24 +157,33 @@ int main(int argc, char *argv[])
 
     // Impressão das estatísticas
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
-    printf("Comparações ABP: %d\n", comp);
-    printf("Número de nodos ABP: %d\n", Nodos(arvoreABP));
-    printf("Altura ABP: %d\n", Altura(arvoreABP));
+    printf("Comparacoes ABP: %d\n", comp);
+    printf("Numero de sinonimos guardados: %d\n", n_dicionario);
+    if (n_dicionario <= 30000){
+        printf("Numero de nodos ABP: %d\n", Nodos(arvoreABP));
+        printf("Altura ABP: %d\n", Altura(arvoreABP));
+    }
+    else
+        printf("Numero de nodos muito grande: possivel erro de stack.\n"
+               "Testar altura da arvore manualmente.\n");
     printf("Número de linhas: %d\n", n_linhas);
+    printf("\n");
     printf("Numero de palavras: %d\n", n_palavras);
-    printf("Média de comparações por palavra: %.4f\n", media_comp);
-    printf("Variância de comparações por palavra: %.4f\n", var_comp);
-    printf("Desvio padrão de comparações por palavra: %.4f\n", desvio_comp);
+    printf("Media de comparacoes por palavra: %f\n", media_comp);
+    printf("Variancia de comparacoes por palavra: %f\n", var_comp);
+    printf("Desvio padrao de comparacoes por palavra: %f\n", desvio_comp);
+    printf("\n");
     printf("Numero de palavras traduzidas: %d\n", n_traduzidas);
-    printf("Comparações das palavras traduzidas: %d\n", comp_traduzidas);
-    printf("Média das palavras traduzidas: %f\n", media_traduzidas);
-    printf("Variância das palavras traduzidas: %f\n", var_traduzidas);
-    printf("Desvio padrão das palavras traduzidas: %f\n", desvio_traduzidas);
-    printf("Numero de palavras não traduzidas: %d\n", n_n_trad);
-    printf("Comparações das palavras não traduzidas: %d\n", comp_n_trad);
-    printf("Média das palavras não traduzidas: %f\n", media_n_trad);
-    printf("Variância das palavras não traduzidas: %f\n", var_n_trad);
-    printf("Desvio padrão das palavras não traduzidas: %f\n", desvio_n_trad);
+    printf("Comparacoes das palavras traduzidas: %d\n", comp_traduzidas);
+    printf("Media das palavras traduzidas: %f\n", media_traduzidas);
+    printf("Variancia das palavras traduzidas: %f\n", var_traduzidas);
+    printf("Desvio padrao das palavras traduzidas: %f\n", desvio_traduzidas);
+    printf("\n");
+    printf("Numero de palavras nao traduzidas: %d\n", n_n_trad);
+    printf("Comparacoes das palavras nao traduzidas: %d\n", comp_n_trad);
+    printf("Media das palavras nao traduzidas: %f\n", media_n_trad);
+    printf("Variancia das palavras nao traduzidas: %f\n", var_n_trad);
+    printf("Desvio padrao das palavras nao traduzidas: %f\n", desvio_n_trad);
 
 
     // Fechamento dos arquivos

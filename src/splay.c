@@ -137,6 +137,22 @@ pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
     while (a != NULL) {
         *lastVisited = a;  // Track the last visited node
 
+        if (!strcmp(a->info, chave)) {
+            return a;  // Key found
+        } else {
+            if (strcmp(a->info, chave) > 0)
+                a = a->esq;  // Move left
+            else
+                a = a->dir;  // Move right
+        }
+    }
+    return NULL;  // Key not found
+}
+
+pNodoA *consultaIncComp(pNodoA *a, char *chave, pNodoA **lastVisited) {
+    while (a != NULL) {
+        *lastVisited = a;  // Track the last visited node
+
         comp++;
         if (!strcmp(a->info, chave)) {
             comp++;
@@ -154,7 +170,7 @@ pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
 
 char* buscaSinonimo(pNodoA** raiz, char* chave) {
     // Use the access function to search for the word
-    pNodoA* resultado = access(*raiz, chave);
+    pNodoA* resultado = accessIncComp(*raiz, chave);
     *raiz = resultado;
 
     // If the word was found, return its synonym
@@ -169,6 +185,21 @@ char* buscaSinonimo(pNodoA** raiz, char* chave) {
 pNodoA* access(pNodoA* raiz, char* chave) {
     pNodoA* lastVisited = NULL;
     pNodoA* found = consultaSplay(raiz, chave, &lastVisited);  // Search the tree
+
+    if (found != NULL) {
+        // Key found, splay the found node
+        return splay(found);
+    } else if (lastVisited != NULL) {
+        // Key not found, splay the last visited node
+        return splay(lastVisited);
+    }
+
+    return raiz;  // Tree was empty
+}
+
+pNodoA* accessIncComp(pNodoA* raiz, char* chave) {
+    pNodoA* lastVisited = NULL;
+    pNodoA* found = consultaIncComp(raiz, chave, &lastVisited);  // Search the tree
 
     if (found != NULL) {
         // Key found, splay the found node

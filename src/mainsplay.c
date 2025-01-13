@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <math.h>
 #include "splay.c"
 #include "abp.c"
 #include "my_strtok.c"
@@ -31,8 +32,14 @@ int main(int argc, char *argv[])
     char separa_achado[20];
     char *resto_linha;
     int tam_separador;
-    int n_linhas, n_palavras;
-    int comp_anterior;
+    int n_linhas, n_palavras, n_traduzidas, n_n_trad, n_dicionario;
+    int comp_anterior, comp_traduzidas, comp_n_trad;
+    double media_comp, desvio_comp, var_comp;
+    double media_traduzidas, desvio_traduzidas, var_traduzidas;
+    double media_n_trad, desvio_n_trad, var_n_trad;
+    double media_rotacoes, desvio_rotacoes, var_rotacoes;
+    double media_criacao;
+    int rot_anterior, rotacoes_criacao;
     pNodoA *arvoreSplay;
     arvoreSplay = NULL;
 
@@ -70,7 +77,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     // else, arquivo de sa�da OK
-
+    n_dicionario = 0;
     // Cria��o da �rvore
     while (fgets(linha,1000,dicionario))
     {   //percorre todo o dicionario, lendo linha por linha
@@ -79,18 +86,27 @@ int main(int argc, char *argv[])
         while (palavra != NULL)
         {   // insere palavra e sin�nimo na �rvore e procura pr�ximos pares
             arvoreSplay = insereSplay(arvoreSplay, palavra, sinonimo);
-            //printf("Inserindo palavra: %s, sinonimo: %s\n", palavra, sinonimo);
+            n_dicionario++;
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
         }
     }
-    printf("nodos arvore splay: %d\n", Nodos(arvoreSplay));
+    rotacoes_criacao = rotacoes;
 
 
     // Parafraseamento do texto
     n_linhas = 0;
     n_palavras = 0;
     comp_anterior = 0;
+    rot_anterior = rotacoes;
+    n_traduzidas = 0;
+    var_comp = 0;
+    comp_traduzidas = 0;
+    var_traduzidas = 0;
+    n_n_trad = 0;
+    comp_n_trad = 0;
+    var_n_trad = 0;
+    var_rotacoes = 0;
     // percorre toda a entrada, lendo linha por linha
     // parafraseando e escrevendo no arquivo de sa�da
     while (fgets(linha,1000,entrada))
@@ -109,23 +125,84 @@ int main(int argc, char *argv[])
         {
             n_palavras++;
             palavra = strlwr(palavra);
-            sinonimo = buscaSinonimo(&arvoreSplay, palavra); // procura a palavra (min�cula)
-            if(sinonimo == NULL)
+            sinonimo = buscaSinonimo(&arvoreSplay, palavra); // procura a palavra (minúcula)
+            if(sinonimo == NULL){
                 sinonimo = palavra;
-            // escreve no arquivo o sin�nimo, seguido pelo separador
+                comp_n_trad += comp - comp_anterior;
+                var_n_trad += pow(comp - comp_anterior, 2);
+            }
+            else{
+                comp_traduzidas += comp - comp_anterior;
+                n_traduzidas++;
+                var_traduzidas += pow(comp - comp_anterior, 2);
+            }
+            // escreve no arquivo o sinônimo, seguido pelo separador
             fprintf(saida,"%s%s", sinonimo, separa_achado);
+            var_comp += pow(comp - comp_anterior, 2);
+            var_rotacoes += pow(rotacoes - rot_anterior, 2);
+            rot_anterior = rotacoes;
             comp_anterior = comp;
             palavra = my_strtok(NULL, separador, separa_achado, &resto_linha);
         }
     }
 
-    // Impress�o das estat�sticas
+    media_comp = (double)comp / n_palavras;
+    var_comp = (double) var_comp / n_palavras - pow(media_comp, 2);
+    desvio_comp = sqrt(var_comp);
+
+    media_rotacoes = (double) (rotacoes - rotacoes_criacao) / n_palavras;
+    var_rotacoes = (double) var_rotacoes / n_palavras - pow(media_rotacoes,2);
+    desvio_rotacoes = sqrt(var_rotacoes);
+    media_criacao = (double) rotacoes_criacao / n_dicionario;
+
+    media_traduzidas = (double) comp_traduzidas / n_traduzidas;
+    var_traduzidas = (double) var_traduzidas / n_traduzidas - pow(media_traduzidas, 2);
+    desvio_traduzidas = sqrt(var_traduzidas);
+
+    n_n_trad = n_palavras - n_traduzidas;
+    media_n_trad = (double) comp_n_trad / n_n_trad;
+    var_n_trad = (double) var_n_trad / n_n_trad - pow(media_n_trad, 2);
+    desvio_n_trad = sqrt(var_n_trad);
+
+
+    // Impressão das estatísticas
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
-    printf("Compara��es Splay: %d\n", comp);
-    printf("N�mero de nodos Splay: %d\n", Nodos(arvoreSplay));
-    printf("Altura Splay: %d\n", Altura(arvoreSplay));
-    printf("N�mero de linhas: %d\n", n_linhas);
+    printf("Comparacoes Splay: %d\n", comp);
+    printf("Numero de sinonimos guardados: %d\n", n_dicionario);
+    if (n_dicionario <= 30000){
+        printf("Numero de nodos Splay: %d\n", Nodos(arvoreSplay));
+        printf("Altura Splay: %d\n", Altura(arvoreSplay));
+    }
+    else
+        printf("Numero de nodos muito grande: possivel erro de stack.\n"
+               "Testar altura da arvore manualmente.\n");
+    printf("Numero de linhas: %d\n", n_linhas);
+    printf("\n");
+    printf("Numero de rotacoes na criacao da Splay: %d\n", rotacoes_criacao);
+    printf("Numero de rotacoes na consulta a Splay: %d\n", rotacoes - rotacoes_criacao);
+    printf("Numero de rotacoes totais: %d\n", rotacoes);
+    printf("Media de rotacoes na criacao: %f\n", media_criacao);
+    printf("Media de rotacoes na consulta: %f\n", media_rotacoes);
+    printf("Variancia de rotacoes na consulta: %f\n", var_rotacoes);
+    printf("Desvio padrao de rotacoes na consulta: %f\n", desvio_rotacoes);
+    printf("\n");
     printf("Numero de palavras: %d\n", n_palavras);
+    printf("Media de comparacoes por palavra: %f\n", media_comp);
+    printf("Variancia de comparacoes por palavra: %f\n", var_comp);
+    printf("Desvio padrao de comparacoes por palavra: %f\n", desvio_comp);
+    printf("\n");
+    printf("Numero de palavras traduzidas: %d\n", n_traduzidas);
+    printf("Comparacoes das palavras traduzidas: %d\n", comp_traduzidas);
+    printf("Media das palavras traduzidas: %f\n", media_traduzidas);
+    printf("Variancia das palavras traduzidas: %f\n", var_traduzidas);
+    printf("Desvio padrao das palavras traduzidas: %f\n", desvio_traduzidas);
+    printf("\n");
+    printf("Numero de palavras nao traduzidas: %d\n", n_n_trad);
+    printf("Comparacoes das palavras nao traduzidas: %d\n", comp_n_trad);
+    printf("Media das palavras nao traduzidas: %f\n", media_n_trad);
+    printf("Variancia das palavras nao traduzidas: %f\n", var_n_trad);
+    printf("Desvio padrao das palavras nao traduzidas: %f\n", desvio_n_trad);
+
 
     // Fechamento dos arquivos
     fclose (dicionario);
