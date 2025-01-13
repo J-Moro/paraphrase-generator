@@ -1,0 +1,15 @@
+.\mainABP ../Arqs_apresentacao/dict_10K.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_ABP_10K.txt
+
+.\mainABP ../Arqs_apresentacao/dict_10K_sorted.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_ABP_10K_sorted.txt
+
+.\mainABP ../Arqs_apresentacao/dict_33K.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_ABP_33K.txt
+
+.\mainABP ../Arqs_apresentacao/dict_33K_sorted.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_ABP_33K_sorted.txt
+
+.\mainsplay ../Arqs_apresentacao/dict_10K.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_splay_10K.txt
+
+.\mainsplay  ../Arqs_apresentacao/dict_10K_sorted.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_splay_10K_sorted.txt
+
+.\mainsplay ../Arqs_apresentacao/dict_33K.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_splay_33K.txt
+
+.\mainsplay ../Arqs_apresentacao/dict_33K_sorted.txt ../Arqs_apresentacao/pata_da_gazelaCap1.txt ../Outputs/saida_splay_33K_sorted.txt

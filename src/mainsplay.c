@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
     printf("Comparacoes Splay: %d\n", comp);
     printf("Numero de sinonimos guardados: %d\n", n_dicionario);
-    if (n_dicionario <= 30000){
+    if (n_dicionario <= 35000){
         printf("Numero de nodos Splay: %d\n", Nodos(arvoreSplay));
         printf("Altura Splay: %d\n", Altura(arvoreSplay));
     }

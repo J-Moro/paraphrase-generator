@@ -7,19 +7,19 @@
 #include "my_strtok.c"
 
 /*
-Programa gerador de paráfrases por árvore ABP.
+Programa gerador de parï¿½frases por ï¿½rvore ABP.
 Deve ser chamado na linha de comando como:
 mainABP --dict --text --output
 onde:
---dict é o nome do arquivo contendo pares de sinônimos
---text é o nome do arquivo de entrada, a ser parafraseado
---output é o nome do arquivo de saída gerado
+--dict ï¿½ o nome do arquivo contendo pares de sinï¿½nimos
+--text ï¿½ o nome do arquivo de entrada, a ser parafraseado
+--output ï¿½ o nome do arquivo de saï¿½da gerado
 */
 
 
 int main(int argc, char *argv[])
 {
-    // Inicializações
+    // Inicializaï¿½ï¿½es
     setlocale(LC_ALL,"");
     FILE * dicionario;
     FILE * entrada;
@@ -40,9 +40,9 @@ int main(int argc, char *argv[])
     arvoreABP = NULL;
 
 
-    if (argc!=4)  // programa espera 4 parâmetros
+    if (argc!=4)  // programa espera 4 parï¿½metros
     {
-        printf ("Número incorreto de parâmetros.\n"
+        printf ("Nï¿½mero incorreto de parï¿½metros.\n"
                 "Para chamar o programa digite: mainABP <arq_dicionario> <arq_entrada> <arq_saida>\n");
         return 1;
     }
@@ -72,15 +72,15 @@ int main(int argc, char *argv[])
         fclose(dicionario);
         return 1;
     }
-    // else, arquivo de saída OK
+    // else, arquivo de saï¿½da OK
     n_dicionario = 0;
-    // Criação da árvore
+    // Criaï¿½ï¿½o da ï¿½rvore
     while (fgets(linha,1000,dicionario))
     {   //percorre todo o dicionario, lendo linha por linha
         palavra = strtok (linha, separa_dict);
         sinonimo = strtok (NULL, separa_dict);
         while (palavra != NULL)
-        {   // insere palavra e sinônimo na árvore e procura próximos pares
+        {   // insere palavra e sinï¿½nimo na ï¿½rvore e procura prï¿½ximos pares
             palavra = strlwr(palavra);
             sinonimo = strlwr(sinonimo);
             arvoreABP = InsereIterativo(arvoreABP, palavra, sinonimo);
@@ -103,12 +103,12 @@ int main(int argc, char *argv[])
     comp_n_trad = 0;
     var_n_trad = 0;
     // percorre toda a entrada, lendo linha por linha
-    // parafraseando e escrevendo no arquivo de saída
+    // parafraseando e escrevendo no arquivo de saï¿½da
     while (fgets(linha,1000,entrada))
     {
 
         n_linhas++;
-        // imprime possível separador antes da primeira palavra
+        // imprime possï¿½vel separador antes da primeira palavra
         tam_separador = strspn(linha, separador);
         strncpy(separa_achado, linha, tam_separador);
         separa_achado[tam_separador] = '\0';
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
         {
             n_palavras++;
             palavra = strlwr(palavra);
-            sinonimo = BuscaArvore(arvoreABP, palavra); // procura a palavra (minúcula)
+            sinonimo = BuscaArvore(arvoreABP, palavra); // procura a palavra (minï¿½cula)
             if(sinonimo == NULL){
                 sinonimo = palavra;
                 comp_n_trad += comp - comp_anterior;
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
                 n_traduzidas++;
                 var_traduzidas += pow(comp - comp_anterior, 2);
             }
-            // escreve no arquivo o sinônimo, seguido pelo separador
+            // escreve no arquivo o sinï¿½nimo, seguido pelo separador
             fprintf(saida,"%s%s", sinonimo, separa_achado);
 
             var_comp += pow(comp - comp_anterior, 2);
@@ -155,18 +155,18 @@ int main(int argc, char *argv[])
     var_n_trad = (double) var_n_trad / n_n_trad - pow(media_n_trad, 2);
     desvio_n_trad = sqrt(var_n_trad);
 
-    // Impressão das estatísticas
+    // Impressï¿½o das estatï¿½sticas
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
     printf("Comparacoes ABP: %d\n", comp);
     printf("Numero de sinonimos guardados: %d\n", n_dicionario);
-    if (n_dicionario <= 30000){
+    if (n_dicionario <= 35000){
         printf("Numero de nodos ABP: %d\n", Nodos(arvoreABP));
         printf("Altura ABP: %d\n", Altura(arvoreABP));
     }
     else
         printf("Numero de nodos muito grande: possivel erro de stack.\n"
                "Testar altura da arvore manualmente.\n");
-    printf("Número de linhas: %d\n", n_linhas);
+    printf("Nï¿½mero de linhas: %d\n", n_linhas);
     printf("\n");
     printf("Numero de palavras: %d\n", n_palavras);
     printf("Media de comparacoes por palavra: %f\n", media_comp);
