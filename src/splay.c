@@ -71,7 +71,7 @@ pNodoA* rotacaoZagZag(pNodoA* raiz)
     return rotacaoZag(raiz);
 }
 
-pNodoA* splay(pNodoA* nodo, char* chave)    //funcao temporariamente vazia
+pNodoA* splay(pNodoA* nodo)    //funcao temporariamente vazia
 {
     if(nodo == NULL)    // se a arvore estiver vazia
         return nodo;    // retorna a arvore vazia
@@ -125,7 +125,7 @@ pNodoA* splay(pNodoA* nodo, char* chave)    //funcao temporariamente vazia
     
     if(nodo->pai != NULL)   //se o nodo tiver pai (nao for a raiz)
     {
-        return splay(nodo, chave);  //chama a funcao splay recursivamente
+        return splay(nodo);  //chama a funcao splay recursivamente
     }
     else
     {
@@ -153,13 +153,16 @@ pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
 }
 
 char* buscaSinonimo(pNodoA* raiz, char* chave) {
+    // Use the access function to search for the word
+    pNodoA* resultado = access(raiz, chave);
 
-    pNodoA *palavraAchada = access(raiz, chave);
-    if (strcmp(palavraAchada->info, chave) == 0)
-        return palavraAchada->sinonimo;
-    else
-        return NULL;
+    // If the word was found, return its synonym
+    if (resultado != NULL && strcmp(resultado->info, chave) == 0) {
+        return resultado->sinonimo;
+    }
 
+    // If the word was not found, return NULL
+    return NULL;
 }
 
 pNodoA* access(pNodoA* raiz, char* chave) {
@@ -168,36 +171,13 @@ pNodoA* access(pNodoA* raiz, char* chave) {
 
     if (found != NULL) {
         // Key found, splay the found node
-        return splay(found, chave);
+        return splay(found);
     } else if (lastVisited != NULL) {
         // Key not found, splay the last visited node
-        return splay(lastVisited, chave);
+        return splay(lastVisited);
     }
 
     return raiz;  // Tree was empty
-}
-
-pNodoA* join(pNodoA* raiz1, pNodoA* raiz2) {
-
-    if(raiz1 == NULL) return raiz2;  // If the first tree is empty, return the second tree
-    if(raiz2 == NULL) return raiz1;  // If the second tree is empty, return the first tree
-
-    // Find the maximum node in the first tree
-    pNodoA* lastVisited = NULL;
-    pNodoA* rightmost = raiz1;
-    while (rightmost->dir != NULL) {
-        lastVisited = rightmost;
-        rightmost = rightmost->dir;
-    }
-
-    // Splay the maximum node
-    raiz1 = splay(rightmost, rightmost->info);
-
-    // Make the second tree the right child of the maximum node
-    raiz1->dir = raiz2;
-    raiz2->pai = raiz1;
-
-    return raiz1;
 }
 
 void split(pNodoA* root, char* chave, pNodoA** root1, pNodoA** root2) {
@@ -248,17 +228,5 @@ pNodoA *insereSplay(pNodoA *a, char *palavra, char *sinonimo)
     if (subArvoreDir != NULL) subArvoreDir->pai = novoNodo;
 
     return novoNodo;
-
-}
-
-pNodoA* deleteSplay(pNodoA* raiz, char* chave)
-{
-    raiz = access(raiz, chave);  // Splay the node to be deleted
-
-    free(raiz);  // Delete the node
-
-    raiz = join(raiz->esq, raiz->dir);  // Join the left and right subtrees
-
-    return raiz;
 
 }
