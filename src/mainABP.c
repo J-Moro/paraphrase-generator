@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
         return 1;
     }
     // else, arquivo de saída OK
-
     // Criação da árvore
     while (fgets(linha,1000,dicionario))
     {   //percorre todo o dicionario, lendo linha por linha
@@ -83,7 +82,7 @@ int main(int argc, char *argv[])
         {   // insere palavra e sinônimo na árvore e procura próximos pares
             palavra = strlwr(palavra);
             sinonimo = strlwr(sinonimo);
-            arvoreABP = Inserearvore(arvoreABP, palavra, sinonimo);
+            arvoreABP = InsereIterativo(arvoreABP, palavra, sinonimo);
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
         }

@@ -25,6 +25,48 @@ pNodoA *Inserearvore(pNodoA *a, char *palavra, char *sinonimo)
     return a;
 }
 
+pNodoA *InsereIterativo(pNodoA *a, char *palavra, char *sinonimo)
+{
+    pNodoA *pAuxPai, *pAuxFilho;
+    if (a == NULL)  // árvore vazia
+    {
+        a = (pNodoA *)malloc(sizeof(pNodoA));
+        strcpy(a->info, palavra);
+        strcpy(a->sinonimo, sinonimo);
+        a->pai = NULL;
+        a->esq = NULL;
+        a->dir = NULL;
+    }
+    else
+    {
+        pAuxFilho = a;
+        while (pAuxFilho != NULL)
+        {   // navega árvore até achar folha (sub-árvore vazia)
+            pAuxPai = pAuxFilho;
+            if (strcmp(palavra, pAuxFilho->info) < 0)
+            {
+                pAuxFilho = pAuxFilho->esq;
+            }
+            else
+                pAuxFilho = pAuxFilho->dir;
+        }
+
+        // aloca nodo
+        pAuxFilho = (pNodoA*) malloc(sizeof(pNodoA));
+        strcpy(pAuxFilho->info, palavra);
+        strcpy(pAuxFilho->sinonimo, sinonimo);
+        pAuxFilho->pai = pAuxPai;
+        pAuxFilho->esq = NULL;
+        pAuxFilho->dir = NULL;
+
+        if(strcmp(palavra, pAuxPai->info) < 0)    // inserir na esquerda de pai
+            pAuxPai->esq = pAuxFilho;
+        else // na direita
+            pAuxPai->dir = pAuxFilho;
+    }
+    return a;   // retorna raiz da árvore
+}
+
 pNodoA *consulta(pNodoA *a, char *chave)
 {
     while (a != NULL)

@@ -19,6 +19,7 @@ typedef struct TNodoA{
 int comp = 0;
 
 pNodoA* Inserearvore(pNodoA *a, char *palavra, char *sinonimo);
+pNodoA *InsereIterativo(pNodoA *a, char *palavra, char *sinonimo);
 pNodoA *consulta(pNodoA *a, char *chave);
 char* BuscaArvore(pNodoA *a, char *palavra);
 int Nodos(pNodoA *a);

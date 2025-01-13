@@ -122,7 +122,7 @@ pNodoA* splay(pNodoA* nodo)    //funcao temporariamente vazia
         }
 
     }
-    
+
     if(nodo->pai != NULL)   //se o nodo tiver pai (nao for a raiz)
     {
         return splay(nodo);  //chama a funcao splay recursivamente
@@ -152,9 +152,10 @@ pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
     return NULL;  // Key not found
 }
 
-char* buscaSinonimo(pNodoA* raiz, char* chave) {
+char* buscaSinonimo(pNodoA** raiz, char* chave) {
     // Use the access function to search for the word
-    pNodoA* resultado = access(raiz, chave);
+    pNodoA* resultado = access(*raiz, chave);
+    *raiz = resultado;
 
     // If the word was found, return its synonym
     if (resultado != NULL && strcmp(resultado->info, chave) == 0) {

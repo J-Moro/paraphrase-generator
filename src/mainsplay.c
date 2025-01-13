@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
         }
     }
     printf("nodos arvore splay: %d\n", Nodos(arvoreSplay));
-    
+
 
     // Parafraseamento do texto
     n_linhas = 0;
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
         {
             n_palavras++;
             palavra = strlwr(palavra);
-            sinonimo = buscaSinonimo(arvoreSplay, palavra); // procura a palavra (min�cula)
+            sinonimo = buscaSinonimo(&arvoreSplay, palavra); // procura a palavra (min�cula)
             if(sinonimo == NULL)
                 sinonimo = palavra;
             // escreve no arquivo o sin�nimo, seguido pelo separador
