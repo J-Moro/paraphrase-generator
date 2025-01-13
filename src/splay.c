@@ -207,7 +207,7 @@ pNodoA *insereSplay(pNodoA *a, char *palavra, char *sinonimo)
     if (subArvoreEsq != NULL) subArvoreEsq->pai = novoNodo;
     if (subArvoreDir != NULL) subArvoreDir->pai = novoNodo;
 
-    return novoNodo;
+    return splay(novoNodo, palavra);  // Splay the newly inserted node
 }
 
 pNodoA* deleteSplay(pNodoA* raiz, char* chave)
