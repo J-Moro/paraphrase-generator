@@ -17,6 +17,14 @@ onde:
 */
 
 
+// Function to count the nodes in the Splay tree
+int countNodes(pNodoA *raiz) {
+    if (raiz == NULL) {
+        return 0;
+    }
+    return 1 + countNodes(raiz->esq) + countNodes(raiz->dir);
+}
+
 int main(int argc, char *argv[])
 {
     // Inicializa��es
@@ -79,10 +87,13 @@ int main(int argc, char *argv[])
         while (palavra != NULL)
         {   // insere palavra e sin�nimo na �rvore e procura pr�ximos pares
             arvoreSplay = insereSplay(arvoreSplay, palavra, sinonimo);
+            //printf("Inserindo palavra: %s, sinonimo: %s\n", palavra, sinonimo);
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
         }
     }
+    printf("nodos arvore splay: %d\n", countNodes(arvoreSplay));
+    
 
     // Parafraseamento do texto
     n_linhas = 0;
@@ -120,6 +131,7 @@ int main(int argc, char *argv[])
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
     printf("Compara��es Splay: %d\n", comp);
     printf("N�mero de nodos Splay: %d\n", Nodos(arvoreSplay));
+    printf("nodos arvore splay: %d\n", countNodes(arvoreSplay));
     printf("Altura Splay: %d\n", Altura(arvoreSplay));
     printf("N�mero de linhas: %d\n", n_linhas);
     printf("Numero de palavras: %d\n", n_palavras);

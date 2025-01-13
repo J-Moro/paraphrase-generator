@@ -26,71 +26,92 @@ pNodoA* rotacaoZag(pNodoA* raiz)
 
 pNodoA* rotacaoZagZig(pNodoA* raiz)
 {
+    if (raiz == NULL || raiz->esq == NULL) return raiz;  // Check if raiz or its left child is NULL
     raiz->esq = rotacaoZag(raiz->esq);  // rotaciona o filho esquerdo da raiz para a esquerda
     return rotacaoZig(raiz);            // rotaciona a raiz para a direita
 }
 
 pNodoA* rotacaoZigZag(pNodoA* raiz)
 {
+    if (raiz == NULL || raiz->dir == NULL) return raiz;  // Check if raiz or its right child is NULL
     raiz->dir = rotacaoZig(raiz->dir);  // rotaciona o filho direito da raiz para a direita
     return rotacaoZag(raiz);            // rotaciona a raiz para a esquerda
 }
 
 pNodoA* rotacaoZigZig(pNodoA* raiz)
 {
+    if (raiz == NULL || raiz->esq == NULL) return raiz;  // Check if raiz or its left child is NULL
     raiz = rotacaoZig(raiz);    // rotaciona a raiz para a direita duas vezes
     return rotacaoZig(raiz);
 }
 
 pNodoA* rotacaoZagZag(pNodoA* raiz)
 {
+    if (raiz == NULL || raiz->dir == NULL) return raiz;  // Check if raiz or its right child is NULL
     raiz = rotacaoZag(raiz);    // rotaciona a raiz para a direita duas vezes
     return rotacaoZag(raiz);
 }
 
-pNodoA* splay(pNodoA* nodo, char* chave)
+pNodoA* splay(pNodoA* nodo, char* chave)    //funcao temporariamente vazia
 {
-    if (nodo == NULL)    // se a arvore estiver vazia
+    if(nodo == NULL)    // se a arvore estiver vazia
         return nodo;    // retorna a arvore vazia
 
-    while (nodo->pai != NULL)      // enquanto o nodo tiver pai
+    else if(nodo->pai != NULL)      //se o nodo tiver pai
     {
-        if (nodo->pai->pai == NULL)  // se o nodo não tiver avô
+        if(nodo->pai->pai != NULL)  //se o nodo tiver avô
         {
-            if (nodo->pai->esq == nodo) // se o nodo for o filho esquerdo
+            if(nodo->pai->pai->esq == nodo->pai) //se o pai for o filho esquerdo do avô
             {
-                nodo = rotacaoZig(nodo->pai);  // rotaciona o pai para a direita
+                if(nodo->pai->esq == nodo) //se o nodo for o filho esquerdo
+                {
+                    nodo = rotacaoZigZig(nodo->pai->pai);  //rotaciona para a direita
+                    rotacoes++;
+                }
+                else
+                {
+                    nodo = rotacaoZagZig(nodo->pai->pai);  //rotaciona para a esquerda
+                    rotacoes++;
+                }
             }
             else
             {
-                nodo = rotacaoZag(nodo->pai);  // rotaciona o pai para a esquerda
-            }
-        }
-        else if (nodo->pai->pai->esq == nodo->pai) // se o pai for o filho esquerdo do avô
-        {
-            if (nodo->pai->esq == nodo) // se o nodo for o filho esquerdo
-            {
-                nodo = rotacaoZigZig(nodo->pai->pai);  // rotaciona para a direita
-            }
-            else
-            {
-                nodo = rotacaoZagZig(nodo->pai->pai);  // rotaciona para a esquerda
+                if(nodo->pai->dir == nodo) //se o nodo for o filho direito
+                {
+                    nodo = rotacaoZagZag(nodo->pai->pai);  //rotaciona para a esquerda
+                    rotacoes++;
+                }
+                else
+                {
+                    nodo = rotacaoZigZag(nodo->pai->pai);  //rotaciona para a direita
+                    rotacoes++;
+                }
             }
         }
         else
         {
-            if (nodo->pai->dir == nodo) // se o nodo for o filho direito
+            if(nodo->pai->esq == nodo) //se o nodo for o filho esquerdo
             {
-                nodo = rotacaoZagZag(nodo->pai->pai);  // rotaciona para a esquerda
+                nodo = rotacaoZig(nodo->pai);  //rotaciona o pai para a direita
+                rotacoes++;
             }
             else
             {
-                nodo = rotacaoZigZag(nodo->pai->pai);  // rotaciona para a direita
+                nodo = rotacaoZag(nodo->pai);  //rotaciona o pai para a esquerda
+                rotacoes++;
             }
         }
-    }
 
-    return nodo;    // retorna o nodo
+    }
+    
+    if(nodo->pai != NULL)   //se o nodo tiver pai (nao for a raiz)
+    {
+        return splay(nodo, chave);  //chama a funcao splay recursivamente
+    }
+    else
+    {
+        return nodo;    //retorna o nodo
+    }
 }
 
 pNodoA *consultaSplay(pNodoA *a, char *chave, pNodoA **lastVisited) {
@@ -207,7 +228,8 @@ pNodoA *insereSplay(pNodoA *a, char *palavra, char *sinonimo)
     if (subArvoreEsq != NULL) subArvoreEsq->pai = novoNodo;
     if (subArvoreDir != NULL) subArvoreDir->pai = novoNodo;
 
-    return splay(novoNodo, palavra);  // Splay the newly inserted node
+    return novoNodo;
+
 }
 
 pNodoA* deleteSplay(pNodoA* raiz, char* chave)
