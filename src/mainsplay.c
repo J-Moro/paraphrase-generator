@@ -7,19 +7,19 @@
 #include "my_strtok.c"
 
 /*
-Programa gerador de paráfrases por árvore Splay.
+Programa gerador de parï¿½frases por ï¿½rvore Splay.
 Deve ser chamado na linha de comando como:
 mainsplay --dict --text --output
 onde:
---dict é o nome do arquivo contendo pares de sinônimos
---text é o nome do arquivo de entrada, a ser parafraseado
---output é o nome do arquivo de saída gerado
+--dict ï¿½ o nome do arquivo contendo pares de sinï¿½nimos
+--text ï¿½ o nome do arquivo de entrada, a ser parafraseado
+--output ï¿½ o nome do arquivo de saï¿½da gerado
 */
 
 
 int main(int argc, char *argv[])
 {
-    // Inicializações
+    // Inicializaï¿½ï¿½es
     setlocale(LC_ALL,"");
     FILE * dicionario;
     FILE * entrada;
@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
     arvoreSplay = NULL;
 
 
-    if (argc!=4)  // programa espera 4 parâmetros
+    if (argc!=4)  // programa espera 4 parï¿½metros
     {
-        printf ("Número incorreto de parâmetros.\n"
+        printf ("Nï¿½mero incorreto de parï¿½metros.\n"
                 "Para chamar o programa digite: mainsplay <arq_dicionario> <arq_entrada> <arq_saida>\n");
         return 1;
     }
@@ -69,15 +69,15 @@ int main(int argc, char *argv[])
         fclose(dicionario);
         return 1;
     }
-    // else, arquivo de saída OK
+    // else, arquivo de saï¿½da OK
 
-    // Criação da árvore
+    // Criaï¿½ï¿½o da ï¿½rvore
     while (fgets(linha,1000,dicionario))
     {   //percorre todo o dicionario, lendo linha por linha
         palavra = strtok (linha, separa_dict);
         sinonimo = strtok (NULL, separa_dict);
         while (palavra != NULL)
-        {   // insere palavra e sinônimo na árvore e procura próximos pares
+        {   // insere palavra e sinï¿½nimo na ï¿½rvore e procura prï¿½ximos pares
             arvoreSplay = insereSplay(arvoreSplay, palavra, sinonimo);
             palavra = strtok (NULL, separa_dict);
             sinonimo = strtok (NULL, separa_dict);
@@ -89,11 +89,11 @@ int main(int argc, char *argv[])
     n_palavras = 0;
     comp_anterior = 0;
     // percorre toda a entrada, lendo linha por linha
-    // parafraseando e escrevendo no arquivo de saída
+    // parafraseando e escrevendo no arquivo de saï¿½da
     while (fgets(linha,1000,entrada))
     {
         n_linhas++;
-        // imprime possível separador antes da primeira palavra
+        // imprime possï¿½vel separador antes da primeira palavra
         tam_separador = strspn(linha, separador);
         strncpy(separa_achado, linha, tam_separador);
         separa_achado[tam_separador] = '\0';
@@ -106,22 +106,22 @@ int main(int argc, char *argv[])
         {
             n_palavras++;
             palavra = strlwr(palavra);
-            sinonimo = buscaSinonimo(arvoreSplay, palavra); // procura a palavra (minúcula)
+            sinonimo = buscaSinonimo(arvoreSplay, palavra); // procura a palavra (minï¿½cula)
             if(sinonimo == NULL)
                 sinonimo = palavra;
-            // escreve no arquivo o sinônimo, seguido pelo separador
+            // escreve no arquivo o sinï¿½nimo, seguido pelo separador
             fprintf(saida,"%s%s", sinonimo, separa_achado);
             comp_anterior = comp;
             palavra = my_strtok(NULL, separador, separa_achado, &resto_linha);
         }
     }
 
-    // Impressão das estatísticas
+    // Impressï¿½o das estatï¿½sticas
     printf("\nArquivo %s gerado com sucesso.\n",argv[3]);
-    printf("Comparações Splay: %d\n", comp);
-    printf("Número de nodos Splay: %d\n", Nodos(arvoreSplay));
+    printf("Comparaï¿½ï¿½es Splay: %d\n", comp);
+    printf("Nï¿½mero de nodos Splay: %d\n", Nodos(arvoreSplay));
     printf("Altura Splay: %d\n", Altura(arvoreSplay));
-    printf("Número de linhas: %d\n", n_linhas);
+    printf("Nï¿½mero de linhas: %d\n", n_linhas);
     printf("Numero de palavras: %d\n", n_palavras);
 
     // Fechamento dos arquivos

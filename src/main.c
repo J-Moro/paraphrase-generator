@@ -8,8 +8,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-
-
     // Construct the command to call mainABP.c
     char commandABP[1024] = "gcc -o mainABP mainABP.c && C:\\Users\\moron\\OneDrive\\Documentos\\EstDados\\src\\mainABP.exe";
     for (int i = 1; i < argc; i++) {
