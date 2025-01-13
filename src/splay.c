@@ -2,27 +2,46 @@
 
 pNodoA* rotacaoZig(pNodoA* raiz)
 {
-    if (raiz == NULL || raiz->esq == NULL) return raiz;  // Check if raiz or its left child is NULL
-    pNodoA* aux = raiz->esq;    // aux recebe o filho esquerdo da raiz
-    raiz->esq = aux->dir;       // o filho direito de aux passa a ser o filho esquerdo da raiz
-    if (aux->dir != NULL) aux->dir->pai = raiz;  // Update parent pointer
-    aux->dir = raiz;            // a raiz passa a ser o filho direito de aux
-    aux->pai = raiz->pai;       // Update parent pointer
-    raiz->pai = aux;            // Update parent pointer
-    return aux;
+    if (raiz == NULL || raiz->esq == NULL) return raiz; // Check if raiz or its left child is NULL
+
+    pNodoA* aux = raiz->esq;        // aux recebe o filho esquerdo da raiz
+    raiz->esq = aux->dir;          // o filho direito de aux passa a ser o filho esquerdo da raiz
+    if (aux->dir != NULL) aux->dir->pai = raiz; // Update parent pointer of aux->dir
+
+    aux->dir = raiz;               // a raiz passa a ser o filho direito de aux
+    aux->pai = raiz->pai;          // Update parent pointer of aux
+    raiz->pai = aux;               // Update parent pointer of raiz
+
+    // Ensure the parent of aux points to aux
+    if (aux->pai != NULL) {
+        if (aux->pai->esq == raiz) aux->pai->esq = aux;
+        else aux->pai->dir = aux;
+    }
+
+    return aux; // Return new root of the subtree
 }
 
 pNodoA* rotacaoZag(pNodoA* raiz)
 {
-    if (raiz == NULL || raiz->dir == NULL) return raiz;  // Check if raiz or its right child is NULL
-    pNodoA* aux = raiz->dir;    // aux recebe o filho direito da raiz
-    raiz->dir = aux->esq;       // o filho esquerdo de aux passa a ser o filho direito da raiz
-    if (aux->esq != NULL) aux->esq->pai = raiz;  // Update parent pointer
-    aux->esq = raiz;            // a raiz passa a ser o filho esquerdo de aux
-    aux->pai = raiz->pai;       // Update parent pointer
-    raiz->pai = aux;            // Update parent pointer
-    return aux;
+    if (raiz == NULL || raiz->dir == NULL) return raiz; // Check if raiz or its right child is NULL
+
+    pNodoA* aux = raiz->dir;        // aux recebe o filho direito da raiz
+    raiz->dir = aux->esq;          // o filho esquerdo de aux passa a ser o filho direito da raiz
+    if (aux->esq != NULL) aux->esq->pai = raiz; // Update parent pointer of aux->esq
+
+    aux->esq = raiz;               // a raiz passa a ser o filho esquerdo de aux
+    aux->pai = raiz->pai;          // Update parent pointer of aux
+    raiz->pai = aux;               // Update parent pointer of raiz
+
+    // Ensure the parent of aux points to aux
+    if (aux->pai != NULL) {
+        if (aux->pai->esq == raiz) aux->pai->esq = aux;
+        else aux->pai->dir = aux;
+    }
+
+    return aux; // Return new root of the subtree
 }
+
 
 pNodoA* rotacaoZagZig(pNodoA* raiz)
 {
